@@ -4,5 +4,5 @@ is a lost and found app where students can post missing items with pictures and 
 # Instalation
 # Usage 
 # Authors
-Jose Alejandro Vargas 
-Pietro Cavenaghi 
+- Jose Alejandro Vargas 
+- Pietro Cavenaghi 
