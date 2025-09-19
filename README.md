@@ -10,5 +10,5 @@ See the items people upload,
 Upload a lost item 
 Get together with the owner of the item
 # Authors
-Jose Alejandro Vargas 
-Pietro Cavenaghi 
+- Jose Alejandro Vargas 
+- Pietro Cavenaghi 
