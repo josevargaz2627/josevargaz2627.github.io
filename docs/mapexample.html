@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Pick-a-Point Map (Leaflet)</title>
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; }
+    .toolbar { display: flex; gap: 8px; padding: 12px; align-items: center; border-bottom: 1px solid #eee; }
+    #map { height: 70vh; width: 100%; }
+    .status { font-size: 0.95rem; opacity: 0.8; }
+    button { padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; background: #fafafa; cursor: pointer; }
+    button:hover { background: #f0f0f0; }
+    .coords { padding: 12px; border-top: 1px solid #eee; }
+    code { background: #f7f7f7; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="placeBtn">Place Pin</button>
+    <button id="removeBtn">Remove Pin</button>
+    <span class="status" id="status">Click “Place Pin”, then click on the map.</span>
+  </div>
+
+  <div id="map"></div>
+  <div class="coords">
+    <strong>Selected coordinates:</strong>
+    <span id="coords">None</span>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script>
+    // 1) Create the map
+    const map = L.map('map').setView([43.6532, -79.3832], 11); // Toronto default; change as you like
+
+    // 2) Add a free tile layer (no API key)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // State
+    let placing = false;
+    let marker = null;
+
+    const placeBtn = document.getElementById('placeBtn');
+    const removeBtn = document.getElementById('removeBtn');
+    const statusEl = document.getElementById('status');
+    const coordsEl = document.getElementById('coords');
+
+    // Helper to show coords
+    function showCoords(latlng) {
+      coordsEl.textContent = `${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`;
+    }
+
+    // Toggle place mode
+    placeBtn.addEventListener('click', () => {
+      placing = true;
+      statusEl.textContent = 'Place mode ON — click the map to drop or move the pin.';
+      placeBtn.disabled = true;
+      // brief visual cue
+      placeBtn.textContent = 'Click the map...';
+      setTimeout(() => (placeBtn.textContent = 'Place Pin'), 800);
+    });
+
+    // Remove pin
+    removeBtn.addEventListener('click', () => {
+      if (marker) {
+        map.removeLayer(marker);
+        marker = null;
+        coordsEl.textContent = 'None';
+      }
+      statusEl.textContent = 'Pin removed. Click “Place Pin” to add one.';
+    });
+
+    // Click to place/move pin
+    map.on('click', (e) => {
+      if (!placing) return;
+
+      if (!marker) {
+        marker = L.marker(e.latlng, { draggable: true }).addTo(map);
+        marker.on('dragend', () => {
+          const pos = marker.getLatLng();
+          showCoords(pos);
+          statusEl.textContent = 'Pin dragged. Coordinates updated.';
+        });
+      } else {
+        marker.setLatLng(e.latlng);
+      }
+
+      showCoords(e.latlng);
+      placing = false;
+      placeBtn.disabled = false;
+      statusEl.textContent = 'Pin placed. Drag to adjust or click “Place Pin” to move again.';
+    });
+  </script>
+</body>
+</html>
