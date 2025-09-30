@@ -1,0 +1,88 @@
+/* html style */
+html {
+
+background-color: yellow;
+background-image: "";
+                                           
+
+}
+/* body style */
+body {
+
+    width: 850px;
+    background-color: white;
+    border: 2px;
+
+}
+
+/* header style */
+header {
+
+height: 120px;
+border-bottom: 2px solid black;
+
+}
+
+/* website logo style */
+header img {
+
+width: 90px;
+height: 90px;
+float: left;
+
+}
+
+header h1 {
+
+    margin-left: 100px;
+    
+}
+/* main navigation bar style */
+nav ul {
+
+    list-style-type: none;
+}
+
+nav ul li {
+
+
+    display: inline;
+    margin: 10px;
+
+}
+/* main area style */
+main {
+
+    padding: 2px;
+
+}
+main article img {
+
+    width: 400px;
+    height: 300px;
+    margin: 10px auto;
+    display: black;
+
+
+}
+
+
+main div iframe{
+
+    margin: 10px auto;
+    display: black;
+}
+
+
+aside {
+
+
+}
+
+/* footer style */
+footer{
+
+    height: 120px;
+    border-top: 2px solid black;
+
+}
